@@ -9,7 +9,7 @@ exports.create = async (req,res)=>{
         const {name,type}=req.body
         const file = new File({name,type, user: req.user.id})
         file.path = name
-        await FileService.ceateDir(file)
+        await FileService.ceateDir(req,file)
         await file.save()
         return res.json(file)
     } catch (error) {
@@ -46,7 +46,7 @@ exports.uploadFile = async(req,res)=>{
         }
         user.usedSpace = user.usedSpace+file.size
         let path
-        path = config.get('filePath')+'\\'+user.id+'\\'+file.name
+        path = req.filePath+'\\'+user.id+'\\'+file.name
         if (fs.existsSync(path)){
             return res.status(400).json({message: "File already exist"})
         }
@@ -84,7 +84,7 @@ exports.deleteFile=async(req,res)=>{
             return res.status(400).json({message:'file not found'})
         }
         else{
-            FileService.deleteFile(file)
+            FileService.deleteFile(req,file)
             await file.remove()
             return res.json({message:'File was delete'})
         }
@@ -124,10 +124,10 @@ exports.updateFile = async(req,res)=>{
         if(!file){
             return res.status(400).json({message:'File Not Found'})
         }
-        await FileService.updateFile(file,name)
+        await FileService.updateFile(req,file,name)
         file.name=name
         file.tags=tags
-        file.path=config.get('filePath')+'\\'+req.user.id+'\\'+file.name
+        file.path=req.filePath+'\\'+req.user.id+'\\'+file.name
         file.save()
         return res.json(file)
     } catch (e) {

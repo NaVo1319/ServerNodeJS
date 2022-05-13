@@ -2,8 +2,8 @@ const fs = require('fs')
 const File = require('../models/File')
 const config = require('config');
 
-exports.ceateDir = (file)=>{
-    const filePath = config.get('filePath')+'\\'+file.user+'\\'+file.path
+exports.ceateDir = (req,file)=>{
+    const filePath = req.filePath+'\\'+file.user+'\\'+file.path
     console.log(filePath)
     return new Promise(((resolve,reject)=>{
         try {
@@ -19,12 +19,12 @@ exports.ceateDir = (file)=>{
         }
     }))
 }
-exports.deleteFile=(file)=>{
+exports.deleteFile=(req,file)=>{
     fs.unlinkSync(file.path+'.'+file.type)
 }
-exports.updateFile = (file,name)=>{
-    const filePathOld = config.get('filePath')+'\\'+file.user+'\\'+file.name+'.'+file.type
-    const filePathNew = config.get('filePath')+'\\'+file.user+'\\'+name+'.'+file.type
+exports.updateFile = (req,file,name)=>{
+    const filePathOld = req.filePath+'\\'+file.user+'\\'+file.name+'.'+file.type
+    const filePathNew = req.filePath+'\\'+file.user+'\\'+name+'.'+file.type
     return new Promise(((resolve,reject)=>{
         try {
             if(fs.existsSync(filePathOld) && !fs.existsSync(filePathNew)){
