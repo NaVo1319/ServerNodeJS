@@ -1,0 +1,6 @@
+{
+    "serverPort": 5000,
+    "dbUrl": "mongodb://root:example@localhost:27017/",
+    "Secret": "Super-secret-key",
+    "filePath": "C:\\Users\\voham\\OneDrive\\Рабочий стол\\Sem6\\CurseWork\\basket-gallery\\server\\files"
+}
